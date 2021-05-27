@@ -4,7 +4,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'FAKE_KEY'
 
-DEBUG = True
+DEBUG = 1
 
 ALLOWED_HOSTS = []
 
@@ -13,6 +13,11 @@ INSTALLED_APPS = [
     #myapps:
     'user.apps.UserConfig',
     'qanda.apps.QandaConfig',
+
+
+    #otherapps:
+    'crispy_forms',
+    'markdownify',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -51,15 +56,12 @@ TEMPLATES = [
     },
 ]
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static'
-]
+STATICFILES_DIRS = [ BASE_DIR / 'static']
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default':{
-
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'answer',
         'USER': 'answer',
@@ -103,3 +105,15 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+MARKDOWNIFY_STRIP = False
+MARKDOWNIFY_WHITELIST_TAGS = [
+    'a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
+    'em', 'i', 'li', 'ol', 'strong', 'ul', 'pre',
+    'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
+]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_URL = 'user:login'
+LOGIN_REDIRECT_URL = 'qanda:today_questions'
+LOGIN_REDIRECT_URL = 'qanda:today_questions'

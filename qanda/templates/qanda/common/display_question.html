@@ -1,0 +1,11 @@
+{% load markdownify %}    
+
+<div class="question">
+    <div class="meta col-sm-8">
+        <h3>{{ question.title }}</h3>
+        <p>Asked by {{ question.user }} on {{ question.created }}</p>
+    </div>
+    <div class="body col-sm-12">
+        {{ question.question|markdownify}}
+    </div>    
+</div>
