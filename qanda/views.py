@@ -7,6 +7,19 @@ from django.http import  HttpResponseBadRequest, HttpResponseRedirect
 
 from .models import Question, Answer
 from .forms import QuestionForm, AnswerAcceptanceForm, AnswerForm
+from .service.elasticsearch import search_for_questions
+
+
+class SearchView(generic.TemplateView):
+    template_name = 'qanda/search.html'
+
+    def get_context_data(self, **kwargs):
+        query = self.request.GET.get('q', None)
+        ctx = super().get_context_data(query=query, **kwargs)
+        if query:
+            results = search_for_questions(query)
+            ctx['hits'] = results
+        return ctx
 
 
 class AskQuestionView(generic.CreateView):
