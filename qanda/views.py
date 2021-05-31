@@ -1,12 +1,11 @@
-from django.shortcuts import render
-from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.utils import timezone
-from django.http import  HttpResponseBadRequest, HttpResponseRedirect
+from django.views import generic
 
-from .models import Question, Answer
 from .forms import QuestionForm, AnswerAcceptanceForm, AnswerForm
+from .models import Question, Answer
 from .service.elasticsearch import search_for_questions
 
 
@@ -25,7 +24,7 @@ class SearchView(generic.TemplateView):
 class AskQuestionView(generic.CreateView):
     form_class = QuestionForm
     template_name = 'qanda/ask.html'
-    success_url = reverse_lazy('qanda:ask')
+    success_url = reverse_lazy('qanda:today_questions')
 
     def get_initial(self):
         return {'user': self.request.user.id}
@@ -55,7 +54,7 @@ class QuestionDetailView(generic.DetailView):
             'answer_form': AnswerForm(initial={
                 'user': self.request.user.id,
                 'question': self.object.id,
-                })
+            })
         })
         if self.object.can_accept_answers(self.request.user):
             ctx.update({

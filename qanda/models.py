@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.urls.base import reverse
 
+from qanda.service import elasticsearch
+
 
 class Question(models.Model):
     title = models.CharField(max_length=140, verbose_name='Название')
@@ -33,13 +35,11 @@ class Question(models.Model):
             'created': self.created,
         }
 
-    def save(self, force_insert=False, force_update=False, using=None, 
-            update_fields=None):
-        super().save(force_insert=force_insert, force_update=force_update,
-                    using=using, update_fields=update_fields)
-        elasticsearch.upsert(self)
-
-
+    # def save(self, force_insert=False, force_update=False, using=None,
+    #         update_fields=None):
+    #     super().save(force_insert=force_insert, force_update=force_update,
+    #                 using=using, update_fields=update_fields)
+    #     elasticsearch.upsert(self)
 
 
 class Answer(models.Model):
@@ -50,7 +50,6 @@ class Answer(models.Model):
     accepted = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ('-created', )
+        ordering = ('-created',)
         verbose_name = 'Ответ'
         verbose_name_plural = 'Ответы'
-
